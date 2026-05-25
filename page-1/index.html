@@ -2,13 +2,13 @@
 <html
   lang="en"
   data-ws-project="409f3230-8f42-4103-94fc-1d20299a5cd1"
-  data-ws-last-published="2026-05-25T04:00:15.619Z"
+  data-ws-last-published="2026-05-25T06:35:13.675Z"
 >
   <head>
     <link
       rel="stylesheet"
       type="text/css"
-      href="/assets/static/app_generated_index-6937cd5a.C59j0J_V.css"
+      href="/assets/static/app_generated_index-6937cd5a.CVihvXvt.css"
     />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -40,87 +40,79 @@
     </script>
     <script>
       (function () {
-        // Save flag when Continue is clicked
+        const MODE = "session";
+
+        function alreadyShown(key) {
+          return sessionStorage.getItem(key) === "shown";
+        }
+
+        function markShown(key) {
+          sessionStorage.setItem(key, "shown");
+        }
+
         document.addEventListener("click", function (e) {
-          const link = e.target.closest("#continue-link");
-          if (link) {
-            sessionStorage.setItem("openMainDialog", "true");
-          }
+          const link = e.target.closest("[data-popup-trigger]");
+
+          if (!link) return;
+
+          sessionStorage.setItem(
+            "pendingPopup",
+            JSON.stringify({
+              key: link.dataset.popupKey,
+              trigger: link.dataset.popupTrigger,
+            }),
+          );
         });
 
-        // Run only on Main page
-        if (window.location.pathname !== "/page-1") return;
+        document.addEventListener("DOMContentLoaded", async function () {
+          const raw = sessionStorage.getItem("pendingPopup");
 
-        document.addEventListener("DOMContentLoaded", function () {
-          if (sessionStorage.getItem("openMainDialog") !== "true") return;
-          sessionStorage.removeItem("openMainDialog");
+          if (!raw) return;
 
-          // Wait until trigger exists
-          const observer = new MutationObserver(() => {
-            const btn = document.getElementById("open-main-dialog");
-            if (btn) {
-              btn.dispatchEvent(
-                new MouseEvent("click", {
-                  bubbles: true,
-                  cancelable: true,
-                  view: window,
-                }),
-              );
-              observer.disconnect();
+          const data = JSON.parse(raw);
+
+          sessionStorage.removeItem("pendingPopup");
+
+          if (alreadyShown(data.key)) return;
+
+          const btn = await waitForElement("#" + data.trigger, 10000);
+
+          if (!btn) return;
+
+          markShown(data.key);
+
+          btn.click();
+        });
+
+        function waitForElement(selector, timeout) {
+          return new Promise((resolve) => {
+            const existing = document.querySelector(selector);
+
+            if (existing) {
+              resolve(existing);
+              return;
             }
-          });
 
-          observer.observe(document.body, {
-            childList: true,
-            subtree: true,
-          });
+            const observer = new MutationObserver(() => {
+              const el = document.querySelector(selector);
 
-          // Safety stop
-          setTimeout(() => observer.disconnect(), 10000);
-        });
-      })();
-    </script>
+              if (el) {
+                observer.disconnect();
+                resolve(el);
+              }
+            });
 
-    <script>
-      (function () {
-        // Save flag when Continue is clicked
-        document.addEventListener("click", function (e) {
-          const link = e.target.closest("#class-link");
-          if (link) {
-            sessionStorage.setItem("openMainDialog", "true");
-          }
-        });
+            observer.observe(document.body, {
+              childList: true,
+              subtree: true,
+            });
 
-        // Run only on Main page
-        if (window.location.pathname !== "/page-3") return;
-
-        document.addEventListener("DOMContentLoaded", function () {
-          if (sessionStorage.getItem("openMainDialog") !== "true") return;
-          sessionStorage.removeItem("openMainDialog");
-
-          // Wait until trigger exists
-          const observer = new MutationObserver(() => {
-            const btn = document.getElementById("open-class-dialog");
-            if (btn) {
-              btn.dispatchEvent(
-                new MouseEvent("click", {
-                  bubbles: true,
-                  cancelable: true,
-                  view: window,
-                }),
-              );
+            setTimeout(() => {
               observer.disconnect();
-            }
+              resolve(null);
+            }, timeout);
           });
-
-          observer.observe(document.body, {
-            childList: true,
-            subtree: true,
-          });
-
-          // Safety stop
-          setTimeout(() => observer.disconnect(), 10000);
-        });
+        }
       })();
     </script>
   </head>
@@ -243,6 +235,8 @@
                 href="/3"
                 draggable="false"
                 id="class-link"
+                data-popup-key="classActivitiesPopup"
+                data-popup-trigger="open-class-dialog"
                 class="w-element c1odoa9y c1qawvgs ck6fjvr c3dkeyl c1qb4vu4 c1aao3w6 czcwzu3 c17jj8qr"
                 ><div
                   class="w-element c1lojlov caylvcj c1h6470g c7a2zuc c1uvoiyk c1rkqbsu ci7nv5o c1vs4ues czgi6sf cvfn34n ctoraxz c11mxxn2 c1896sfc c1d209h9 c1azu0js cptnxxg c12vwhdo c11lcmn8 cf14gsz"
@@ -1060,40 +1054,6 @@
     </div>
     <div style="display: contents">
       <div style="display: contents">
-        <div
-          class="w-element c7a2zuc c1uvoiyk c1rkqbsu cijnkji cz84wov c1vjav77 c1nmfnnq c1a7r2ma c2vqkah c1cejvyb csxm8zh cnlef5d"
-        >
-          <a
-            href="/2"
-            draggable="false"
-            class="w-element c1odoa9y c1qawvgs ck6fjvr c3dkeyl c1n10l1m cjpgz9o c1jbpwf5 c1amyd0h c1f3oitf cq5e6az c1vjav77 c1kld46u c1mi39oi c1xc3vfq cqo5oae c1xwmekz c1hmc8us c1my9bga c1aao3w6 ctwuv04 c6g4nvt cwn2aj2 c173sbc"
-            ><div
-              class="w-element c1lojlov caylvcj c1h6470g c7a2zuc c1uvoiyk c1rkqbsu ci7nv5o c1vs4ues czgi6sf cvfn34n cmdizoj c11mxxn2 cz25iuw cwrluur c1azu0js"
-            >
-              <img
-                alt=""
-                width="80"
-                height="80"
-                src="https://res.cloudinary.com/djxem0t2w/image/upload/v1770638216/Boy_hgw1w4.png"
-                draggable="false"
-                class="w-image c1h6470g c1sg2h20 c15yn9iq ccfuezq"
-                sizes="100vw"
-                srcset="
-                  https://res.cloudinary.com/djxem0t2w/image/upload/v1770638216/Boy_hgw1w4.png  16w,
-                  https://res.cloudinary.com/djxem0t2w/image/upload/v1770638216/Boy_hgw1w4.png  32w,
-                  https://res.cloudinary.com/djxem0t2w/image/upload/v1770638216/Boy_hgw1w4.png  48w,
-                  https://res.cloudinary.com/djxem0t2w/image/upload/v1770638216/Boy_hgw1w4.png  64w,
-                  https://res.cloudinary.com/djxem0t2w/image/upload/v1770638216/Boy_hgw1w4.png  96w,
-                  https://res.cloudinary.com/djxem0t2w/image/upload/v1770638216/Boy_hgw1w4.png 128w,
-                  https://res.cloudinary.com/djxem0t2w/image/upload/v1770638216/Boy_hgw1w4.png 256w
-                "
-                decoding="async"
-                loading="lazy"
-              />
-            </div>
-            <p class="w-element c1my3692">THE<br />LEGENDS</p></a
-          >
-        </div>
         <img
           alt=""
           src="https://res.cloudinary.com/djxem0t2w/image/upload/v1770638218/bottom-Border_yzrjio.png"
@@ -1186,13 +1146,13 @@
       {}
     </script>
     <script
-      src="/assets/entries/entry-server-routing.CZTILyP-.js"
+      src="/assets/entries/entry-server-routing.weYfUEnV.js"
       type="module"
       async
     ></script>
     <link
       rel="modulepreload"
-      href="/assets/entries/pages_page-1.CUqHb6i8.js"
+      href="/assets/entries/pages_page-1.X_-2Oy94.js"
       as="script"
       type="text/javascript"
     /><link

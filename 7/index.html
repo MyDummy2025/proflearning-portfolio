@@ -2,13 +2,13 @@
 <html
   lang="en"
   data-ws-project="409f3230-8f42-4103-94fc-1d20299a5cd1"
-  data-ws-last-published="2026-05-25T04:00:15.619Z"
+  data-ws-last-published="2026-05-25T06:35:13.675Z"
 >
   <head>
     <link
       rel="stylesheet"
       type="text/css"
-      href="/assets/static/app_generated_index-6937cd5a.C59j0J_V.css"
+      href="/assets/static/app_generated_index-6937cd5a.CVihvXvt.css"
     />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -35,87 +35,79 @@
     </script>
     <script>
       (function () {
-        // Save flag when Continue is clicked
+        const MODE = "session";
+
+        function alreadyShown(key) {
+          return sessionStorage.getItem(key) === "shown";
+        }
+
+        function markShown(key) {
+          sessionStorage.setItem(key, "shown");
+        }
+
         document.addEventListener("click", function (e) {
-          const link = e.target.closest("#continue-link");
-          if (link) {
-            sessionStorage.setItem("openMainDialog", "true");
-          }
+          const link = e.target.closest("[data-popup-trigger]");
+
+          if (!link) return;
+
+          sessionStorage.setItem(
+            "pendingPopup",
+            JSON.stringify({
+              key: link.dataset.popupKey,
+              trigger: link.dataset.popupTrigger,
+            }),
+          );
         });
 
-        // Run only on Main page
-        if (window.location.pathname !== "/page-1") return;
+        document.addEventListener("DOMContentLoaded", async function () {
+          const raw = sessionStorage.getItem("pendingPopup");
 
-        document.addEventListener("DOMContentLoaded", function () {
-          if (sessionStorage.getItem("openMainDialog") !== "true") return;
-          sessionStorage.removeItem("openMainDialog");
+          if (!raw) return;
 
-          // Wait until trigger exists
-          const observer = new MutationObserver(() => {
-            const btn = document.getElementById("open-main-dialog");
-            if (btn) {
-              btn.dispatchEvent(
-                new MouseEvent("click", {
-                  bubbles: true,
-                  cancelable: true,
-                  view: window,
-                }),
-              );
-              observer.disconnect();
+          const data = JSON.parse(raw);
+
+          sessionStorage.removeItem("pendingPopup");
+
+          if (alreadyShown(data.key)) return;
+
+          const btn = await waitForElement("#" + data.trigger, 10000);
+
+          if (!btn) return;
+
+          markShown(data.key);
+
+          btn.click();
+        });
+
+        function waitForElement(selector, timeout) {
+          return new Promise((resolve) => {
+            const existing = document.querySelector(selector);
+
+            if (existing) {
+              resolve(existing);
+              return;
             }
-          });
 
-          observer.observe(document.body, {
-            childList: true,
-            subtree: true,
-          });
+            const observer = new MutationObserver(() => {
+              const el = document.querySelector(selector);
 
-          // Safety stop
-          setTimeout(() => observer.disconnect(), 10000);
-        });
-      })();
-    </script>
+              if (el) {
+                observer.disconnect();
+                resolve(el);
+              }
+            });
 
-    <script>
-      (function () {
-        // Save flag when Continue is clicked
-        document.addEventListener("click", function (e) {
-          const link = e.target.closest("#class-link");
-          if (link) {
-            sessionStorage.setItem("openMainDialog", "true");
-          }
-        });
+            observer.observe(document.body, {
+              childList: true,
+              subtree: true,
+            });
 
-        // Run only on Main page
-        if (window.location.pathname !== "/page-3") return;
-
-        document.addEventListener("DOMContentLoaded", function () {
-          if (sessionStorage.getItem("openMainDialog") !== "true") return;
-          sessionStorage.removeItem("openMainDialog");
-
-          // Wait until trigger exists
-          const observer = new MutationObserver(() => {
-            const btn = document.getElementById("open-class-dialog");
-            if (btn) {
-              btn.dispatchEvent(
-                new MouseEvent("click", {
-                  bubbles: true,
-                  cancelable: true,
-                  view: window,
-                }),
-              );
+            setTimeout(() => {
               observer.disconnect();
-            }
+              resolve(null);
+            }, timeout);
           });
-
-          observer.observe(document.body, {
-            childList: true,
-            subtree: true,
-          });
-
-          // Safety stop
-          setTimeout(() => observer.disconnect(), 10000);
-        });
+        }
       })();
     </script>
   </head>
@@ -763,7 +755,7 @@
           loading="lazy"
         />
         <section
-          class="w-element c7a2zuc c2vqkah c1bws23n c18wa3yi c1wkqtkr c1rkqbsu c1k0whjp crwo9m6 c1208y2u cta9382 ck0ylyh c1n10l1m c1my9bga c1wrqvkf cnlef5d c18kupby cwn2aj2 cckj59r c6zkhnt ctf8nym csxm8zh c6hjwpc c16euuik c1lqmysf"
+          class="w-element c7a2zuc c2vqkah c1bws23n c18wa3yi c1wkqtkr c1rkqbsu c1k0whjp crwo9m6 c1vjav77 cta9382 ck0ylyh c1n10l1m c1my9bga c1wrqvkf cnlef5d c18kupby cwn2aj2 cckj59r c6zkhnt ctf8nym csxm8zh c6hjwpc c16euuik c1lqmysf"
         >
           <div
             class="w-element c1wrdlxt cwn2aj2 csxm8zh ctuk8kv c16euuik c1xe2bw0 c17l6bd6"
@@ -839,13 +831,13 @@
       {}
     </script>
     <script
-      src="/assets/entries/entry-server-routing.CZTILyP-.js"
+      src="/assets/entries/entry-server-routing.weYfUEnV.js"
       type="module"
       async
     ></script>
     <link
       rel="modulepreload"
-      href="/assets/entries/pages_7.DhGr44sd.js"
+      href="/assets/entries/pages_7.In-Oi1hw.js"
       as="script"
       type="text/javascript"
     /><link

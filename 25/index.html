@@ -2,13 +2,13 @@
 <html
   lang="en"
   data-ws-project="409f3230-8f42-4103-94fc-1d20299a5cd1"
-  data-ws-last-published="2026-05-25T04:00:15.619Z"
+  data-ws-last-published="2026-05-25T06:35:13.675Z"
 >
   <head>
     <link
       rel="stylesheet"
       type="text/css"
-      href="/assets/static/app_generated_index-6937cd5a.C59j0J_V.css"
+      href="/assets/static/app_generated_index-6937cd5a.CVihvXvt.css"
     />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -35,87 +35,79 @@
     </script>
     <script>
       (function () {
-        // Save flag when Continue is clicked
+        const MODE = "session";
+
+        function alreadyShown(key) {
+          return sessionStorage.getItem(key) === "shown";
+        }
+
+        function markShown(key) {
+          sessionStorage.setItem(key, "shown");
+        }
+
         document.addEventListener("click", function (e) {
-          const link = e.target.closest("#continue-link");
-          if (link) {
-            sessionStorage.setItem("openMainDialog", "true");
-          }
+          const link = e.target.closest("[data-popup-trigger]");
+
+          if (!link) return;
+
+          sessionStorage.setItem(
+            "pendingPopup",
+            JSON.stringify({
+              key: link.dataset.popupKey,
+              trigger: link.dataset.popupTrigger,
+            }),
+          );
         });
 
-        // Run only on Main page
-        if (window.location.pathname !== "/page-1") return;
+        document.addEventListener("DOMContentLoaded", async function () {
+          const raw = sessionStorage.getItem("pendingPopup");
 
-        document.addEventListener("DOMContentLoaded", function () {
-          if (sessionStorage.getItem("openMainDialog") !== "true") return;
-          sessionStorage.removeItem("openMainDialog");
+          if (!raw) return;
 
-          // Wait until trigger exists
-          const observer = new MutationObserver(() => {
-            const btn = document.getElementById("open-main-dialog");
-            if (btn) {
-              btn.dispatchEvent(
-                new MouseEvent("click", {
-                  bubbles: true,
-                  cancelable: true,
-                  view: window,
-                }),
-              );
-              observer.disconnect();
+          const data = JSON.parse(raw);
+
+          sessionStorage.removeItem("pendingPopup");
+
+          if (alreadyShown(data.key)) return;
+
+          const btn = await waitForElement("#" + data.trigger, 10000);
+
+          if (!btn) return;
+
+          markShown(data.key);
+
+          btn.click();
+        });
+
+        function waitForElement(selector, timeout) {
+          return new Promise((resolve) => {
+            const existing = document.querySelector(selector);
+
+            if (existing) {
+              resolve(existing);
+              return;
             }
-          });
 
-          observer.observe(document.body, {
-            childList: true,
-            subtree: true,
-          });
+            const observer = new MutationObserver(() => {
+              const el = document.querySelector(selector);
 
-          // Safety stop
-          setTimeout(() => observer.disconnect(), 10000);
-        });
-      })();
-    </script>
+              if (el) {
+                observer.disconnect();
+                resolve(el);
+              }
+            });
 
-    <script>
-      (function () {
-        // Save flag when Continue is clicked
-        document.addEventListener("click", function (e) {
-          const link = e.target.closest("#class-link");
-          if (link) {
-            sessionStorage.setItem("openMainDialog", "true");
-          }
-        });
+            observer.observe(document.body, {
+              childList: true,
+              subtree: true,
+            });
 
-        // Run only on Main page
-        if (window.location.pathname !== "/page-3") return;
-
-        document.addEventListener("DOMContentLoaded", function () {
-          if (sessionStorage.getItem("openMainDialog") !== "true") return;
-          sessionStorage.removeItem("openMainDialog");
-
-          // Wait until trigger exists
-          const observer = new MutationObserver(() => {
-            const btn = document.getElementById("open-class-dialog");
-            if (btn) {
-              btn.dispatchEvent(
-                new MouseEvent("click", {
-                  bubbles: true,
-                  cancelable: true,
-                  view: window,
-                }),
-              );
+            setTimeout(() => {
               observer.disconnect();
-            }
+              resolve(null);
+            }, timeout);
           });
-
-          observer.observe(document.body, {
-            childList: true,
-            subtree: true,
-          });
-
-          // Safety stop
-          setTimeout(() => observer.disconnect(), 10000);
-        });
+        }
       })();
     </script>
   </head>
@@ -187,6 +179,236 @@
         </section>
       </div>
     </div>
+    <div
+      class="w-element c71l1mb c6pi41w c2vqkah c1azgkpv cbenwze c7a2zuc cwbyes1 c1rkqbsu crwo9m6 c17l3odb c1lnf6i1 cmnzgzu cjf4o2l c18wopmd c1uu1yy2"
+    >
+      <div class="w-element c7a2zuc c1hb2xev">
+        <img
+          alt=""
+          src="https://res.cloudinary.com/djxem0t2w/image/upload/v1778564015/Sheena_01_d84ozs.jpg"
+          class="w-image"
+          sizes="(min-width: 1280px) 50vw, 100vw"
+          srcset="
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564015/Sheena_01_d84ozs.jpg  384w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564015/Sheena_01_d84ozs.jpg  640w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564015/Sheena_01_d84ozs.jpg  750w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564015/Sheena_01_d84ozs.jpg  828w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564015/Sheena_01_d84ozs.jpg 1080w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564015/Sheena_01_d84ozs.jpg 1200w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564015/Sheena_01_d84ozs.jpg 1920w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564015/Sheena_01_d84ozs.jpg 2048w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564015/Sheena_01_d84ozs.jpg 3840w
+          "
+          decoding="async"
+          loading="lazy"
+        />
+      </div>
+      <div class="w-element c7a2zuc c1hb2xev">
+        <img
+          alt=""
+          src="https://res.cloudinary.com/djxem0t2w/image/upload/v1778564012/Sheena_02_tmkibk.jpg"
+          class="w-image"
+          sizes="(min-width: 1280px) 50vw, 100vw"
+          srcset="
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564012/Sheena_02_tmkibk.jpg  384w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564012/Sheena_02_tmkibk.jpg  640w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564012/Sheena_02_tmkibk.jpg  750w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564012/Sheena_02_tmkibk.jpg  828w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564012/Sheena_02_tmkibk.jpg 1080w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564012/Sheena_02_tmkibk.jpg 1200w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564012/Sheena_02_tmkibk.jpg 1920w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564012/Sheena_02_tmkibk.jpg 2048w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564012/Sheena_02_tmkibk.jpg 3840w
+          "
+          decoding="async"
+          loading="lazy"
+        />
+      </div>
+      <div class="w-element c7a2zuc c1hb2xev">
+        <img
+          alt=""
+          src="https://res.cloudinary.com/djxem0t2w/image/upload/v1778564021/Sheena_03_owhfva.jpg"
+          class="w-image"
+          sizes="(min-width: 1280px) 50vw, 100vw"
+          srcset="
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564021/Sheena_03_owhfva.jpg  384w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564021/Sheena_03_owhfva.jpg  640w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564021/Sheena_03_owhfva.jpg  750w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564021/Sheena_03_owhfva.jpg  828w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564021/Sheena_03_owhfva.jpg 1080w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564021/Sheena_03_owhfva.jpg 1200w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564021/Sheena_03_owhfva.jpg 1920w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564021/Sheena_03_owhfva.jpg 2048w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564021/Sheena_03_owhfva.jpg 3840w
+          "
+          decoding="async"
+          loading="lazy"
+        />
+      </div>
+      <div class="w-element c7a2zuc c1hb2xev">
+        <img
+          alt=""
+          src="https://res.cloudinary.com/djxem0t2w/image/upload/v1778564017/Sheena_04_ifjfuk.jpg"
+          class="w-image"
+          sizes="(min-width: 1280px) 50vw, 100vw"
+          srcset="
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564017/Sheena_04_ifjfuk.jpg  384w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564017/Sheena_04_ifjfuk.jpg  640w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564017/Sheena_04_ifjfuk.jpg  750w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564017/Sheena_04_ifjfuk.jpg  828w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564017/Sheena_04_ifjfuk.jpg 1080w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564017/Sheena_04_ifjfuk.jpg 1200w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564017/Sheena_04_ifjfuk.jpg 1920w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564017/Sheena_04_ifjfuk.jpg 2048w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564017/Sheena_04_ifjfuk.jpg 3840w
+          "
+          decoding="async"
+          loading="lazy"
+        />
+      </div>
+      <div class="w-element c7a2zuc c1hb2xev">
+        <img
+          alt=""
+          src="https://res.cloudinary.com/djxem0t2w/image/upload/v1778564025/Sheena_05_mlvabt.jpg"
+          class="w-image"
+          sizes="(min-width: 1280px) 50vw, 100vw"
+          srcset="
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564025/Sheena_05_mlvabt.jpg  384w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564025/Sheena_05_mlvabt.jpg  640w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564025/Sheena_05_mlvabt.jpg  750w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564025/Sheena_05_mlvabt.jpg  828w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564025/Sheena_05_mlvabt.jpg 1080w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564025/Sheena_05_mlvabt.jpg 1200w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564025/Sheena_05_mlvabt.jpg 1920w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564025/Sheena_05_mlvabt.jpg 2048w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564025/Sheena_05_mlvabt.jpg 3840w
+          "
+          decoding="async"
+          loading="lazy"
+        />
+      </div>
+      <div class="w-element c7a2zuc c1hb2xev">
+        <img
+          alt=""
+          src="https://res.cloudinary.com/djxem0t2w/image/upload/v1778564023/Sheena_06_iylf1c.jpg"
+          class="w-image"
+          sizes="(min-width: 1280px) 50vw, 100vw"
+          srcset="
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564023/Sheena_06_iylf1c.jpg  384w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564023/Sheena_06_iylf1c.jpg  640w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564023/Sheena_06_iylf1c.jpg  750w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564023/Sheena_06_iylf1c.jpg  828w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564023/Sheena_06_iylf1c.jpg 1080w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564023/Sheena_06_iylf1c.jpg 1200w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564023/Sheena_06_iylf1c.jpg 1920w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564023/Sheena_06_iylf1c.jpg 2048w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564023/Sheena_06_iylf1c.jpg 3840w
+          "
+          decoding="async"
+          loading="lazy"
+        />
+      </div>
+      <div class="w-element c7a2zuc c1hb2xev">
+        <img
+          alt=""
+          src="https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_07_g2n28c.jpg"
+          class="w-image"
+          sizes="(min-width: 1280px) 50vw, 100vw"
+          srcset="
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_07_g2n28c.jpg  384w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_07_g2n28c.jpg  640w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_07_g2n28c.jpg  750w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_07_g2n28c.jpg  828w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_07_g2n28c.jpg 1080w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_07_g2n28c.jpg 1200w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_07_g2n28c.jpg 1920w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_07_g2n28c.jpg 2048w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_07_g2n28c.jpg 3840w
+          "
+          decoding="async"
+          loading="lazy"
+        />
+      </div>
+      <div class="w-element c7a2zuc c1hb2xev">
+        <img
+          alt=""
+          src="https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg"
+          class="w-image"
+          sizes="(min-width: 1280px) 50vw, 100vw"
+          srcset="
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg  384w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg  640w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg  750w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg  828w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg 1080w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg 1200w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg 1920w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg 2048w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg 3840w
+          "
+          decoding="async"
+          loading="lazy"
+        />
+      </div>
+      <div class="w-element c7a2zuc c1hb2xev">
+        <img
+          alt=""
+          src="https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg"
+          class="w-image"
+          sizes="(min-width: 1280px) 50vw, 100vw"
+          srcset="
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg  384w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg  640w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg  750w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg  828w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg 1080w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg 1200w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg 1920w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg 2048w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564024/Sheena_08_mnjr56.jpg 3840w
+          "
+          decoding="async"
+          loading="lazy"
+        />
+      </div>
+      <div class="w-element c7a2zuc c1hb2xev">
+        <img
+          alt=""
+          src="https://res.cloudinary.com/djxem0t2w/image/upload/v1778564029/Sheena_10_gatsnh.jpg"
+          class="w-image"
+          sizes="(min-width: 1280px) 50vw, 100vw"
+          srcset="
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564029/Sheena_10_gatsnh.jpg  384w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564029/Sheena_10_gatsnh.jpg  640w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564029/Sheena_10_gatsnh.jpg  750w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564029/Sheena_10_gatsnh.jpg  828w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564029/Sheena_10_gatsnh.jpg 1080w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564029/Sheena_10_gatsnh.jpg 1200w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564029/Sheena_10_gatsnh.jpg 1920w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564029/Sheena_10_gatsnh.jpg 2048w,
+            https://res.cloudinary.com/djxem0t2w/image/upload/v1778564029/Sheena_10_gatsnh.jpg 3840w
+          "
+          decoding="async"
+          loading="lazy"
+        />
+      </div>
+    </div>
+    <div style="display: contents">
+      <div style="display: contents">
+        <div
+          class="w-element c2b9onh c1lojlov caylvcj c1vjav77 clsbl11 c2vqkah c17mily c1j4ycc0 ctuk8kv c1rh4thh c305un c5dw6cq"
+        >
+          <div class="w-element c7a2zuc c1uvoiyk c1rkqbsu c2vqkah c2b9onh">
+            <div
+              class="w-element c2vqkah c2b9onh c7a2zuc cwbyes1 c1rkqbsu cp0tzsl ca7zj89 cl1hz7x c4xphw4"
+            ></div>
+            <div
+              class="w-element c1vjav77 c2vqkah c1a7r2ma cauov7u c2b9onh c53vt0j"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div style="display: contents">
       <div style="display: contents">
         <img
@@ -248,7 +470,7 @@
           loading="lazy"
         />
         <section
-          class="w-element c7a2zuc c2vqkah c1bws23n c18wa3yi c1wkqtkr c1rkqbsu c1k0whjp crwo9m6 c1208y2u cta9382 ck0ylyh c1n10l1m c1my9bga c1wrqvkf cnlef5d c18kupby cwn2aj2 cckj59r c6zkhnt ctf8nym csxm8zh c6hjwpc c16euuik c1lqmysf"
+          class="w-element c7a2zuc c2vqkah c1bws23n c18wa3yi c1wkqtkr c1rkqbsu c1k0whjp crwo9m6 c1vjav77 cta9382 ck0ylyh c1n10l1m c1my9bga c1wrqvkf cnlef5d c18kupby cwn2aj2 cckj59r c6zkhnt ctf8nym csxm8zh c6hjwpc c16euuik c1lqmysf"
         >
           <div
             class="w-element c1wrdlxt cwn2aj2 csxm8zh ctuk8kv c16euuik c1xe2bw0 c17l6bd6"
@@ -292,22 +514,6 @@
         </section>
       </div>
     </div>
-    <div style="display: contents">
-      <div style="display: contents">
-        <div
-          class="w-element c2b9onh c1lojlov caylvcj c1vjav77 clsbl11 c2vqkah c17mily c1j4ycc0 ctuk8kv c1rh4thh c305un c5dw6cq"
-        >
-          <div class="w-element c7a2zuc c1uvoiyk c1rkqbsu c2vqkah c2b9onh">
-            <div
-              class="w-element c2vqkah c2b9onh c7a2zuc cwbyes1 c1rkqbsu cp0tzsl ca7zj89 cl1hz7x c4xphw4"
-            ></div>
-            <div
-              class="w-element c1vjav77 c2vqkah c1a7r2ma cauov7u c2b9onh c53vt0j"
-            ></div>
-          </div>
-        </div>
-      </div>
-    </div>
     <script id="vike_pageContext" type="application/json">
       {
         "_urlRewrite": null,
@@ -340,13 +546,13 @@
       {}
     </script>
     <script
-      src="/assets/entries/entry-server-routing.CZTILyP-.js"
+      src="/assets/entries/entry-server-routing.weYfUEnV.js"
       type="module"
       async
     ></script>
     <link
       rel="modulepreload"
-      href="/assets/entries/pages_25.HAfn50jB.js"
+      href="/assets/entries/pages_25.DWMFE9BM.js"
       as="script"
       type="text/javascript"
     /><link
