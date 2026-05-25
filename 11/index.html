@@ -2,13 +2,13 @@
 <html
   lang="en"
   data-ws-project="409f3230-8f42-4103-94fc-1d20299a5cd1"
-  data-ws-last-published="2026-05-25T06:35:13.675Z"
+  data-ws-last-published="2026-05-25T08:37:12.805Z"
 >
   <head>
     <link
       rel="stylesheet"
       type="text/css"
-      href="/assets/static/app_generated_index-6937cd5a.CVihvXvt.css"
+      href="/assets/static/app_generated_index-6937cd5a.9RITINJq.css"
     />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -35,15 +35,9 @@
     </script>
     <script>
       (function () {
-        const MODE = "session";
-
-        function alreadyShown(key) {
-          return sessionStorage.getItem(key) === "shown";
-        }
-
-        function markShown(key) {
-          sessionStorage.setItem(key, "shown");
-        }
+        // -----------------------------------
+        // SAVE POPUP REQUEST
+        // -----------------------------------
 
         document.addEventListener("click", function (e) {
           const link = e.target.closest("[data-popup-trigger]");
@@ -59,7 +53,11 @@
           );
         });
 
-        document.addEventListener("DOMContentLoaded", async function () {
+        // -----------------------------------
+        // OPEN POPUP
+        // -----------------------------------
+
+        window.addEventListener("load", async function () {
           const raw = sessionStorage.getItem("pendingPopup");
 
           if (!raw) return;
@@ -68,45 +66,41 @@
 
           sessionStorage.removeItem("pendingPopup");
 
-          if (alreadyShown(data.key)) return;
+          // already shown?
+          if (sessionStorage.getItem(data.key) === "shown") {
+            return;
+          }
 
-          const btn = await waitForElement("#" + data.trigger, 10000);
+          // wait a little extra for Webstudio hydration
+          await delay(800);
 
-          if (!btn) return;
+          const btn = document.getElementById(data.trigger);
 
-          markShown(data.key);
+          if (!btn) {
+            console.log("Popup trigger not found:", data.trigger);
+            return;
+          }
 
-          btn.click();
+          // mark shown
+          sessionStorage.setItem(data.key, "shown");
+
+          // IMPORTANT:
+          // Webstudio dialog trigger fix
+          btn.dispatchEvent(
+            new PointerEvent("pointerdown", {
+              bubbles: true,
+            }),
+          );
+
+          btn.dispatchEvent(
+            new MouseEvent("click", {
+              bubbles: true,
+            }),
+          );
         });
 
-        function waitForElement(selector, timeout) {
-          return new Promise((resolve) => {
-            const existing = document.querySelector(selector);
-
-            if (existing) {
-              resolve(existing);
-              return;
-            }
-
-            const observer = new MutationObserver(() => {
-              const el = document.querySelector(selector);
-
-              if (el) {
-                observer.disconnect();
-                resolve(el);
-              }
-            });
-
-            observer.observe(document.body, {
-              childList: true,
-              subtree: true,
-            });
-
-            setTimeout(() => {
-              observer.disconnect();
-              resolve(null);
-            }, timeout);
-          });
+        function delay(ms) {
+          return new Promise((resolve) => setTimeout(resolve, ms));
         }
       })();
     </script>
@@ -263,6 +257,17 @@
         </div>
       </div>
     </section>
+    <button
+      type="button"
+      id="open-spell-dialog"
+      class="w-button c1uvoiyk c1rkqbsu c137a2dw c114x0ns c49m9tq cn1ep9q c1v8yicm c1ikv001 c1em8f97 c1q69ufm cxwgqs2 c52c1yg czri3v2 ch5b2fb c194so83 cvidxkf c1208y2u cgiy480 c13p2l5u c1ji1dxb c1tk1g4q c9b4xl8 cjpliev coft3m5 c1dumc40 cad05a3 cy6w207 c1xexgy8"
+      aria-haspopup="dialog"
+      aria-expanded="false"
+      aria-controls="radix-:R1m:"
+      data-state="closed"
+    >
+      Button
+    </button>
     <div style="display: contents">
       <div style="display: contents">
         <img
@@ -340,7 +345,7 @@
                 src="https://res.cloudinary.com/djxem0t2w/image/upload/v1770638215/Teacher_k4yihp.png"
                 id=""
                 draggable="false"
-                class="w-image cz25iuw ccfuezq c1h6470g cjuebk7 c1e27eti c1m8k5wl c1mi39oi c1xc3vfq cqo5oae c1xwmekz c2uxuub cieehlz c1h6no9s c1eo8sw6 c1l08ytf c9fy4oh c1gu5xpt c1dynipl cer1pg9 czbq5fw cybfs1k c1a7i53e c1y9ph1w c1kl5diu c1mudxz9 c15kmg8j c1h6lqeq c1b8qbzk cnxj8mf c1vv2oxw c7rf2qr c60647q c1w54w5q c1y1kcf3 c1orcxsp"
+                class="w-image cz25iuw ccfuezq c1h6470g cjuebk7 c1e27eti c1m8k5wl c1mi39oi c1xc3vfq cqo5oae c1xwmekz c2uxuub cieehlz c1h6no9s c1eo8sw6 c1l08ytf c9fy4oh c1gu5xpt c1dynipl c1bobxu0 cer1pg9 czbq5fw cybfs1k c1a7i53e c1y9ph1w c1kl5diu c1mudxz9 c15kmg8j c1h6lqeq c1b8qbzk cnxj8mf c1vv2oxw c7rf2qr c60647q c1w54w5q c1y1kcf3 c1orcxsp"
                 sizes="100vw"
                 srcset="
                   https://res.cloudinary.com/djxem0t2w/image/upload/v1770638215/Teacher_k4yihp.png  16w,
@@ -416,13 +421,13 @@
       {}
     </script>
     <script
-      src="/assets/entries/entry-server-routing.weYfUEnV.js"
+      src="/assets/entries/entry-server-routing.OVQDgKrx.js"
       type="module"
       async
     ></script>
     <link
       rel="modulepreload"
-      href="/assets/entries/pages_11.4ZFzqyJe.js"
+      href="/assets/entries/pages_11.D86nnqQY.js"
       as="script"
       type="text/javascript"
     /><link
@@ -437,7 +442,7 @@
       type="text/javascript"
     /><link
       rel="modulepreload"
-      href="/assets/chunks/chunk-BzkhfSkz.js"
+      href="/assets/chunks/chunk-8bIiMg7r.js"
       as="script"
       type="text/javascript"
     /><link
