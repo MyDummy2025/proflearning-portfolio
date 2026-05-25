@@ -2,13 +2,13 @@
 <html
   lang="en"
   data-ws-project="409f3230-8f42-4103-94fc-1d20299a5cd1"
-  data-ws-last-published="2026-05-25T06:35:13.675Z"
+  data-ws-last-published="2026-05-25T06:54:39.604Z"
 >
   <head>
     <link
       rel="stylesheet"
       type="text/css"
-      href="/assets/static/app_generated_index-6937cd5a.CVihvXvt.css"
+      href="/assets/static/app_generated_index-6937cd5a.DIV_lt03.css"
     />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -33,15 +33,9 @@
     </script>
     <script>
       (function () {
-        const MODE = "session";
-
-        function alreadyShown(key) {
-          return sessionStorage.getItem(key) === "shown";
-        }
-
-        function markShown(key) {
-          sessionStorage.setItem(key, "shown");
-        }
+        // -----------------------------------
+        // SAVE POPUP REQUEST
+        // -----------------------------------
 
         document.addEventListener("click", function (e) {
           const link = e.target.closest("[data-popup-trigger]");
@@ -57,7 +51,11 @@
           );
         });
 
-        document.addEventListener("DOMContentLoaded", async function () {
+        // -----------------------------------
+        // OPEN POPUP
+        // -----------------------------------
+
+        window.addEventListener("load", async function () {
           const raw = sessionStorage.getItem("pendingPopup");
 
           if (!raw) return;
@@ -66,45 +64,41 @@
 
           sessionStorage.removeItem("pendingPopup");
 
-          if (alreadyShown(data.key)) return;
+          // already shown?
+          if (sessionStorage.getItem(data.key) === "shown") {
+            return;
+          }
 
-          const btn = await waitForElement("#" + data.trigger, 10000);
+          // wait a little extra for Webstudio hydration
+          await delay(800);
 
-          if (!btn) return;
+          const btn = document.getElementById(data.trigger);
 
-          markShown(data.key);
+          if (!btn) {
+            console.log("Popup trigger not found:", data.trigger);
+            return;
+          }
 
-          btn.click();
+          // mark shown
+          sessionStorage.setItem(data.key, "shown");
+
+          // IMPORTANT:
+          // Webstudio dialog trigger fix
+          btn.dispatchEvent(
+            new PointerEvent("pointerdown", {
+              bubbles: true,
+            }),
+          );
+
+          btn.dispatchEvent(
+            new MouseEvent("click", {
+              bubbles: true,
+            }),
+          );
         });
 
-        function waitForElement(selector, timeout) {
-          return new Promise((resolve) => {
-            const existing = document.querySelector(selector);
-
-            if (existing) {
-              resolve(existing);
-              return;
-            }
-
-            const observer = new MutationObserver(() => {
-              const el = document.querySelector(selector);
-
-              if (el) {
-                observer.disconnect();
-                resolve(el);
-              }
-            });
-
-            observer.observe(document.body, {
-              childList: true,
-              subtree: true,
-            });
-
-            setTimeout(() => {
-              observer.disconnect();
-              resolve(null);
-            }, timeout);
-          });
+        function delay(ms) {
+          return new Promise((resolve) => setTimeout(resolve, ms));
         }
       })();
     </script>
@@ -361,13 +355,13 @@
       {}
     </script>
     <script
-      src="/assets/entries/entry-server-routing.weYfUEnV.js"
+      src="/assets/entries/entry-server-routing.Cp5z2fHd.js"
       type="module"
       async
     ></script>
     <link
       rel="modulepreload"
-      href="/assets/entries/pages_index.E5KWZ3rs.js"
+      href="/assets/entries/pages_index.3oGBSMIx.js"
       as="script"
       type="text/javascript"
     /><link
